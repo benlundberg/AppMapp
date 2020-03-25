@@ -1,0 +1,176 @@
+﻿<Page
+    x:Class="AppMapp.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AppMapp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.DataContext>
+        <local:MainViewModel />
+    </Page.DataContext>
+    
+    <Grid Margin="10 20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="3*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Button 
+            Padding="20"
+            BorderThickness="1 1 1 0"
+            VerticalAlignment="Stretch"
+            HorizontalAlignment="Stretch"
+            Command="{Binding MapJsonCommand}"
+            Content="Map Json" />
+        <TextBox 
+            Grid.Row="1"
+            Text="{Binding Json, Mode=TwoWay}"
+            AcceptsReturn="True" />
+        <SplitView
+            Grid.Column="1"
+            Grid.RowSpan="2"
+            IsPaneOpen="True"
+            PanePlacement="Right"
+            DisplayMode="CompactInline">
+            <SplitView.Pane>
+                <ScrollViewer>
+                    <StackPanel 
+                        Padding="20"
+                        Spacing="10">
+                        <TextBox 
+                            Header="Namespace"
+                            Text="{Binding DefaultNamespace, Mode=TwoWay}"
+                            PlaceholderText="Namespace" />
+                        <TextBox
+                            Header="Main class name"
+                            Text="{Binding MainClass, Mode=TwoWay}"
+                            PlaceholderText="Main class name" />
+                        <CheckBox 
+                            IsChecked="{Binding UseJsonProperty, Mode=TwoWay}"
+                            Content="Use Json Property" />
+                        <CheckBox 
+                            IsChecked="{Binding UsePublicValues, Mode=TwoWay}"
+                            Content="Use public visibility" />
+                        <ListView 
+                            SelectionMode="None"
+                            ItemsSource="{Binding ClassItems}">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel 
+                                        Padding="10"
+                                        Margin="0 10"
+                                        Background="White">
+                                        <TextBlock FontWeight="Bold" Text="{Binding ClassInfo.AssignedName}" />
+                                        <CheckBox 
+                                            IsChecked="{Binding ClassInfo.UseService, Mode=TwoWay}"
+                                            Content="Create service" />
+                                        <CheckBox 
+                                            IsChecked="{Binding ClassInfo.UseMemoryChache, Mode=TwoWay}"
+                                            Content="Memory cache support" />
+                                        <CheckBox 
+                                            IsChecked="{Binding ClassInfo.UseOfflineSupport, Mode=TwoWay}"
+                                            Content="Offline support" />
+                                        <CheckBox 
+                                            IsChecked="{Binding ClassInfo.UseMapping, Mode=TwoWay}"
+                                            Content="Model object" />
+                                        <CheckBox 
+                                            IsChecked="{Binding UseJsonProperty, Mode=TwoWay}"
+                                            Content="Use Json Property" />
+                                        <CheckBox 
+                                            IsChecked="{Binding UsePublicValues, Mode=TwoWay}"
+                                            Content="Use public visibility" />
+                                        <RadioButton 
+                                            GroupName="repository"
+                                            IsChecked="{Binding ClassInfo.IsStorageRepository, Mode=TwoWay}"
+                                            Content="Storage repository" />
+                                        <RadioButton 
+                                            GroupName="repository"
+                                            IsChecked="{Binding ClassInfo.IsSQLiteRepository, Mode=TwoWay}"
+                                            Content="SQLite repository" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </StackPanel>
+                </ScrollViewer>
+            </SplitView.Pane>
+            <SplitView.Content>
+                <ListView 
+                    SelectionMode="None"
+                    ItemsSource="{Binding ClassItems}">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Padding="10" Background="#EEE" Margin="0 10">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Margin="0 0 0 4" Text="{Binding ClassInfo.AssignedName}" Style="{StaticResource TitleTextBlockStyle}" />
+                                <TextBox 
+                                    Grid.Row="1"
+                                    Margin="0 0 0 4"
+                                    Header="Dto class info"
+                                    Background="White"
+                                    Visibility="{Binding DtoFileInfo.ClassText, Converter={StaticResource EmptyStringToCollapsedConv}}"
+                                    Text="{Binding DtoFileInfo.ClassText}" 
+                                    AcceptsReturn="True" />
+                                <TextBox 
+                                    Grid.Row="2"
+                                    Margin="0 0 0 4"
+                                    Background="White"
+                                    Header="Model object class info"
+                                    Visibility="{Binding ClassInfo.UseMapping, Converter={StaticResource BoolToVisibilityConv}}"
+                                    Text="{Binding ModelObjectFileInfo.ClassText}" 
+                                    AcceptsReturn="True" />
+                                <TextBox 
+                                    Grid.Row="3"
+                                    Margin="0 0 0 4"
+                                    Background="White"
+                                    Header="Mapper info"
+                                    Visibility="{Binding ClassInfo.UseMapping, Converter={StaticResource BoolToVisibilityConv}}"
+                                    Text="{Binding MapperFileInfo.ClassText}" 
+                                    AcceptsReturn="True" />
+                                <TextBox 
+                                    Grid.Row="4"
+                                    Margin="0 0 0 4"
+                                    Background="White"
+                                    Header="Service interface class info"
+                                    Visibility="{Binding ClassInfo.UseService, Converter={StaticResource BoolToVisibilityConv}}"
+                                    Text="{Binding InterfaceServiceFileInfo.ClassText}" 
+                                    AcceptsReturn="True" />
+                                <TextBox 
+                                    Grid.Row="5"
+                                    Margin="0 0 0 4"
+                                    Background="White"
+                                    Header="Service class info"
+                                    Visibility="{Binding ClassInfo.UseService, Converter={StaticResource BoolToVisibilityConv}}"
+                                    Text="{Binding ClassServiceFileInfo.ClassText}" 
+                                    AcceptsReturn="True" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </SplitView.Content>
+        </SplitView>
+    </Grid>
+</Page>

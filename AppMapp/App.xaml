@@ -1,0 +1,16 @@
+﻿<Application
+    x:Class="AppMapp.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AppMapp">
+
+    <Application.Resources>
+        <ResourceDictionary>
+
+            <local:BoolToVisibleConverter x:Key="BoolToVisibilityConv" />
+            <local:EmptyStringToCollapsedConverter x:Key="EmptyStringToCollapsedConv" />
+
+        </ResourceDictionary>
+    </Application.Resources>
+    
+</Application>
